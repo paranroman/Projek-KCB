@@ -7,7 +7,7 @@ import numpy as np
 import mediapipe as mp
 from keras.models import load_model
 
-model_folder = "Model"
+model_folder = "model"
 model_path = os.path.join(model_folder, "model.h5")
 labels_path = os.path.join(model_folder, "labels.npy")
 
@@ -26,11 +26,8 @@ cap = cv2.VideoCapture(0)
 
 while True:
     lst = []
-
     _, frm = cap.read()
-
     frm = cv2.flip(frm, 1)
-
     res = holis.process(cv2.cvtColor(frm, cv2.COLOR_BGR2RGB))
 
     if res.face_landmarks:
@@ -57,7 +54,6 @@ while True:
         lst = np.array(lst).reshape(1, -1)
 
         pred = label[np.argmax(model.predict(lst))]
-
         print(pred)
         cv2.putText(frm, pred, (50, 50), cv2.FONT_ITALIC, 1, (255, 0, 0), 2)
 
